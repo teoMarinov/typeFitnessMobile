@@ -10,11 +10,7 @@ type propType = {
 const Nutrition = ({ navigation }: propType) => {
   return (
     <View>
-      <Button
-        title="Workouts"
-        onPress={() => navigation.navigate("Workouts")}
-      />
-      <Button title="Logout" onPress={() => auth.signOut()} />
+      <Text>Nutting</Text>
     </View>
   );
 };
