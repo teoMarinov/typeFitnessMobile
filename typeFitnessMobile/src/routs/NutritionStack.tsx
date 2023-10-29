@@ -1,17 +1,28 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { NavigationProp } from "@react-navigation/native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 import Nutrition from "../screens/Nutrition/Nutrition";
+import Header from "../components/Header/Header";
 
 type propType = {
-  navigation: NavigationProp<any>;
+  navigation: DrawerNavigationProp<any>;
+  handle: string | null
 };
 
 const Stack = createNativeStackNavigator();
 
-export default function NutritionStack({ navigation }: propType) {
+export default function NutritionStack({ navigation, handle }: propType) {
   return (
     <Stack.Navigator initialRouteName="Nutrition">
-      <Stack.Screen name="Nutrition" component={Nutrition} />
+      <Stack.Screen
+        name="Nutrition"
+        options={{
+          headerTitle: () => (
+            <Header navigation={navigation} title="Nutrition" />
+          ),
+        }}
+      >
+        {() => <Nutrition handle={handle} />}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 }

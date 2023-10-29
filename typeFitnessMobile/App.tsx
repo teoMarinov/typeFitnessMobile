@@ -1,4 +1,4 @@
-import 'react-native-gesture-handler';
+import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StyleSheet, Text, View } from "react-native";
@@ -13,23 +13,13 @@ import LoggedInRoute from "./src/routs/LoggedInRoute";
 
 const Stack = createNativeStackNavigator();
 
-const InsideStack = createNativeStackNavigator();
-
-const InsideLayout = () => {
-  return (
-    <Stack.Navigator>
-      <InsideStack.Screen name="Workouts" component={Workout} />
-    </Stack.Navigator>
-  );
-};
-
 type propType = {
   navigation: NavigationProp<any, any>;
-}
+};
 
 export default function App({ navigation }: propType) {
   const [user, setUser] = useState<User | null>(null);
-  const [handle, setHandle] = useState<String | null>(null);
+  const [handle, setHandle] = useState<string | null>(null);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user: any) => {
@@ -46,13 +36,9 @@ export default function App({ navigation }: propType) {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login">
           {user ? (
-            <>
-              <InsideStack.Screen
-                name="Inside"
-                component={LoggedInRoute}
-                options={{ headerShown: false }}
-              />
-            </>
+            <Stack.Screen name="Inside" options={{ headerShown: false }}>
+              {(props) => <LoggedInRoute handle={handle} {...props} />}
+            </Stack.Screen>
           ) : (
             <Stack.Screen
               name="Login"

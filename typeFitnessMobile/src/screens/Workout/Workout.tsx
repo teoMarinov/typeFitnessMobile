@@ -1,39 +1,60 @@
 import React, { useState, useEffect } from "react";
 import {
-  View,
   Text,
   StyleSheet,
   TouchableWithoutFeedback,
-  FlatList,
+  ScrollView,
 } from "react-native";
 import readData from "../../utils/readData";
 import { NavigationProp, RouteProp } from "@react-navigation/native";
-import { auth } from "../../config/firebase.config";
 
 type propType = {
-  route: RouteProp<any>,
+  handle: string | null;
   navigation: NavigationProp<any, any>;
 };
 
-const Workout = ({ route, navigation }: propType) => {
+export type ExerciseType = {
+  name: string;
+  reps: string;
+  sets: string;
+};
+
+export type WorkoutType = {
+  exercises: ExerciseType[];
+  name: string;
+};
+
+type SnapshotType = {
+  [id: string]: WorkoutType;
+};
+
+export type WorkoutArrType = [string, WorkoutType];
+
+type AllWorkoutsType = WorkoutArrType[];
+
+const Workout = ({ handle, navigation }: propType) => {
   const [allWorkouts, setAllWorkouts] = useState<any>([]);
 
   useEffect(() => {
-    readData(`workouts/${"teo03"}`, (snapshot: any) => {
-      const result: any = Object.entries(snapshot);
+    readData(`workouts/${handle}`, (snapshot: SnapshotType) => {
+      const result: AllWorkoutsType = Object.entries(snapshot);
       setAllWorkouts(result);
     });
-  }, []);
+  }, [handle]);
+
+  const pressHandler = (workout: WorkoutArrType) => {
+    navigation.navigate("RecordWorkout", { handle, workout });
+  };
   return (
     <>
       {Array.isArray(allWorkouts) &&
-        allWorkouts.map((workout: any) => (
-          <TouchableWithoutFeedback
-            style={styles.touchable}
-            onPress={() => alert(workout[0])}
-          >
-            <Text style={styles.text}>{workout[1].name}</Text>
-          </TouchableWithoutFeedback>
+        allWorkouts.map((workout: WorkoutArrType) => (
+            <TouchableWithoutFeedback
+              style={styles.touchable}
+              onPress={() => pressHandler(workout)}
+            >
+              <Text style={styles.text}>{workout[1].name}</Text>
+            </TouchableWithoutFeedback>
         ))}
     </>
   );

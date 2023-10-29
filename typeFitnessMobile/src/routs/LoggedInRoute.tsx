@@ -5,15 +5,25 @@ import NutritionStack from "./NutritionStack";
 
 const Drawer = createDrawerNavigator();
 
-export default function LoggedInRoute() {
+type propType = {
+  handle: string | null
+};
+
+export default function LoggedInRoute({ handle }: propType) {
   return (
-    
-      <Drawer.Navigator 
-      screenOptions={{ headerShown: false }}
+    <Drawer.Navigator screenOptions={{ headerShown: false }}>
+      <Drawer.Screen
+        name="Workouts"
+        options={{ drawerLabel: 'Workouts' }}
       >
-        <Drawer.Screen name="Workouts" component={WorkoutStack} />
-        <Drawer.Screen name="Nutrition" component={NutritionStack} />
-      </Drawer.Navigator>
-  
+        {(props) => <WorkoutStack handle={handle} {...props} />}
+      </Drawer.Screen>
+      <Drawer.Screen
+        name="Nutrition"
+        options={{ drawerLabel: 'Nutrition' }}
+      >
+        {(props) => <NutritionStack handle={handle} {...props} />}
+      </Drawer.Screen>
+    </Drawer.Navigator>
   );
 }
