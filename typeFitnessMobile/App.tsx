@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StyleSheet, Text, View } from "react-native";
@@ -8,6 +9,7 @@ import { useState, useEffect } from "react";
 import { User, onAuthStateChanged } from "firebase/auth";
 import { auth } from "./src/config/firebase.config";
 import getUserHandle from "./src/utils/getUserHandle";
+import LoggedInRoute from "./src/routs/LoggedInRoute";
 
 const Stack = createNativeStackNavigator();
 
@@ -47,7 +49,7 @@ export default function App({ navigation }: propType) {
             <>
               <InsideStack.Screen
                 name="Inside"
-                component={InsideLayout}
+                component={LoggedInRoute}
                 options={{ headerShown: false }}
               />
             </>
