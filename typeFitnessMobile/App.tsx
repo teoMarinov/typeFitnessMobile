@@ -60,4 +60,3 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-//aaaa

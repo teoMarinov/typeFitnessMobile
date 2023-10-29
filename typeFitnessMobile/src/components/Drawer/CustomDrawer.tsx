@@ -4,7 +4,7 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from "@react-navigation/drawer";
-
+import { auth } from "../../config/firebase.config";
 
 
 const CustomDrawer = (props: any) => {
@@ -13,7 +13,7 @@ const CustomDrawer = (props: any) => {
       <View style={styles.content}>
         <DrawerItemList {...props} />
         <View style={styles.button}>
-          <Button title="Log out" color={"lightgreen"}/>
+          <Button title="Log out" onPress={() => auth.signOut()}/>
         </View>
       </View>
     </DrawerContentScrollView>

@@ -52,6 +52,7 @@ const Workout = ({ handle, navigation }: propType) => {
             <TouchableWithoutFeedback
               style={styles.touchable}
               onPress={() => pressHandler(workout)}
+              key={workout[0]}
             >
               <Text style={styles.text}>{workout[1].name}</Text>
             </TouchableWithoutFeedback>
