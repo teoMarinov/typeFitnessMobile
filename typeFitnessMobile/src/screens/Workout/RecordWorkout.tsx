@@ -4,6 +4,7 @@ import { RouteProp } from "@react-navigation/native";
 import { WorkoutArrType, ExerciseType } from "./Workout";
 import addData from "../../utils/addData";
 import ExerciseLine from "../../components/Workouts/ExerciseLine";
+import { useNavigation } from "@react-navigation/native";
 
 type propType = {
   route: RouteProp<any>;
@@ -40,7 +41,10 @@ const RecordWorkout = ({ route }: propType) => {
   const [loggedData, setLoggedData] = useState<loggedDataType>({});
   const [currentlyOpen, setCurrentlyOpen] = useState("");
 
+  const navigation = useNavigation();
+
   const handleFinishWorkout = () => {
+    if (Object.keys(loggedData).length < 1) return navigation.goBack();
     const data = Object.entries(loggedData);
     const exercises = data.reduce((acc: any, currentExercise: any) => {
       const exerciseName = currentExercise[0];
@@ -63,10 +67,11 @@ const RecordWorkout = ({ route }: propType) => {
     };
 
     addData(`finishedWorkouts/${handle}`, workoutData);
+    navigation.goBack();
   };
 
   return (
-    <ScrollView>
+    <ScrollView style={{ flex: 1 }}>
       <View style={styles.container}>
         {exercises.map((exercise: ExerciseType, index: number) => (
           <View key={exercise.name}>
@@ -80,7 +85,7 @@ const RecordWorkout = ({ route }: propType) => {
             />
           </View>
         ))}
-        <View style={styles.button}>
+        <View>
           <Button title="Finish" onPress={handleFinishWorkout} />
         </View>
       </View>
@@ -96,6 +101,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    height: "100%",
   },
   button: {
     position: "absolute",
