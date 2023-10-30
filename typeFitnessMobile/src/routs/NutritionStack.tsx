@@ -13,7 +13,7 @@ export default function NutritionStack({ navigation }: propType) {
   return (
     <Stack.Navigator initialRouteName="YourNutrition">
       <Stack.Screen
-        name="Nutrition"
+        name="YourNutrition"
         options={{
           headerTitle: () => (
             <Header navigation={navigation} title="Nutrition" />
