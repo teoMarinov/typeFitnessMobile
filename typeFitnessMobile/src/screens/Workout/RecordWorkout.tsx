@@ -102,7 +102,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
-    // backgroundColor: "coral",
     height: "100%",
   },
   button: {

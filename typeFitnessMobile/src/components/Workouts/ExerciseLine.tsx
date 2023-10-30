@@ -5,10 +5,21 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ExerciseType } from "../../screens/Workout/Workout";
 import { loggedDataType } from "../../screens/Workout/RecordWorkout";
 import { AntDesign } from "@expo/vector-icons";
+import Animated, {
+  Easing,
+  withSpring,
+  useSharedValue,
+  useAnimatedStyle,
+  withRepeat,
+  withSequence,
+  withDelay,
+  withTiming,
+  useDerivedValue,
+} from "react-native-reanimated";
 
 type propType = {
   exercise: ExerciseType;
@@ -36,6 +47,23 @@ const ExerciseLine = ({
   const [exerciseLoggs, setExerciseLoggs] = useState([{ failure: false }]);
   const lineH = exercise.name.length > 31 ? 104 : 74;
   const lineIncrease = 55;
+
+  const heightValue = useSharedValue(lineH); // Initialize with the initial height
+
+  useEffect(() => {
+    currentlyOpen === exerciseIndex
+      ? (heightValue.value = exerciseLoggs.length * lineIncrease + lineH)
+      : (heightValue.value = lineH);
+  }, [currentlyOpen, exerciseLoggs]);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      height: withTiming(heightValue.value, {
+        duration: 80,
+        easing: Easing.ease,
+      }),
+    };
+  });
 
   const updateLoggedData = (newLog: logType[]) => {
     if (!loggedData[exercise.name]) {
@@ -95,15 +123,13 @@ const ExerciseLine = ({
   };
 
   return (
-    <View
-      style={{
-        width: "100%",
-        height:
-          currentlyOpen === exerciseIndex
-            ? exerciseLoggs.length * lineIncrease + lineH
-            : lineH,
-        overflow: "hidden",
-      }}
+    <Animated.View
+      style={[
+        {
+          overflow: "hidden",
+        },
+        animatedStyle,
+      ]}
     >
       <TouchableWithoutFeedback onPress={toggleCurrentlyOpen}>
         <View style={styles.textView}>
@@ -138,7 +164,7 @@ const ExerciseLine = ({
           />
         </View>
       ))}
-    </View>
+    </Animated.View>
   );
 };
 
@@ -165,7 +191,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 6,
     marginBottom: 6,
-    marginHorizontal: 5
+    marginHorizontal: 5,
   },
   text: {
     fontSize: 25,
