@@ -5,14 +5,13 @@ import Header from "../components/Header/Header";
 
 type propType = {
   navigation: DrawerNavigationProp<any>;
-  handle: string | null
 };
 
 const Stack = createNativeStackNavigator();
 
-export default function NutritionStack({ navigation, handle }: propType) {
+export default function NutritionStack({ navigation }: propType) {
   return (
-    <Stack.Navigator initialRouteName="Nutrition">
+    <Stack.Navigator initialRouteName="YourNutrition">
       <Stack.Screen
         name="Nutrition"
         options={{
@@ -21,7 +20,7 @@ export default function NutritionStack({ navigation, handle }: propType) {
           ),
         }}
       >
-        {() => <Nutrition handle={handle} />}
+        {() => <Nutrition/>}
       </Stack.Screen>
     </Stack.Navigator>
   );

@@ -2,14 +2,12 @@ import { View, Text, Button } from "react-native";
 import React from "react";
 import { NavigationProp } from "@react-navigation/native";
 
-type propType = {
-  handle: string | null;
-};
 
-const Nutrition = ({  handle }: propType) => {
+
+const Nutrition = () => {
   return (
     <View>
-      <Text>{handle}</Text>
+      <Text>Nuttin</Text>
     </View>
   );
 };

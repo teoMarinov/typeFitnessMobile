@@ -5,10 +5,10 @@ import {
   Button,
   ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
-import database, { auth } from "../../config/firebase.config";
-import { ref, get } from "firebase/database";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../../contenxt/AuthContext";
+import { auth } from "../../config/firebase.config";
+import { loginUser } from "../../service/auth-service";
 
 const Login = () => {
   const [handle, setHadnle] = useState("");
@@ -16,22 +16,35 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const appAuth = auth;
 
-  const loginUser = async () => {
-    setLoading(true);
+  const [error, setError] = useState("");
 
-    const email: string = (
-      await get(ref(database, `users/${handle}/email`))
-    ).val();
+  const setUser = useContext(AuthContext);
+
+  const onLogin = async () => {
+    if (!handle) return setError("Please enter a username!");
+    if (!password) return setError("Please enter a password");
 
     try {
-      signInWithEmailAndPassword(auth, email, password);
+      const credential: any = await loginUser(handle, password);
+      {
+        setUser;
+      }
+      ({
+        user: credential.user,
+      });
     } catch (error: any) {
-      alert(error);
-    } finally {
-      setLoading(false);
+      console.log(error.message);
+      if (error.message.includes("wrong-password")) {
+        return setError("Wrong password!");
+      }
+      if (error.message.includes("User not found")) {
+        return setError("User not found!");
+      }
+      if (error.message.includes("too-many-requests")) {
+        return setError("Too many request. Try again later!");
+      }
     }
   };
-
   return (
     <View style={styles.container}>
       {loading ? (
@@ -50,7 +63,7 @@ const Login = () => {
             placeholder="Password"
             onChangeText={(val) => setPassword(val)}
           />
-          <Button title="Login" onPress={loginUser} />
+          <Button title="Login" onPress={onLogin} />
         </>
       )}
     </View>

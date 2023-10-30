@@ -8,46 +8,69 @@ import { NavigationProp } from "@react-navigation/native";
 import { useState, useEffect } from "react";
 import { User, onAuthStateChanged } from "firebase/auth";
 import { auth } from "./src/config/firebase.config";
-import getUserHandle from "./src/utils/getUserHandle";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 import LoggedInRoute from "./src/routs/LoggedInRoute";
+import { DataSnapshot } from "firebase/database";
+import setUserData from "./src/service/user-service";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { AuthContext } from "./src/contenxt/AuthContext";
 
 const Stack = createNativeStackNavigator();
 
 type propType = {
-  navigation: NavigationProp<any, any>;
+  navigation: DrawerNavigationProp<any, any>;
 };
 
 export default function App({ navigation }: propType) {
-  const [user, setUser] = useState<User | null>(null);
-  const [handle, setHandle] = useState<string | null>(null);
+  const [user]: any = useAuthState(auth);
+
+  const [appState, setAppState] = useState<any>({
+    user,
+    userData: null,
+  });
+
+  if (appState.user !== user) {
+    setAppState({ ...appState, user: user });
+  }
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user: any) => {
-      getUserHandle(user).then((handle) => {
-        setHandle(handle);
-      });
+    if (user === null) return;
 
-      setUser(user);
-    });
-  }, []);
+    setUserData(user.uid)
+      .then((snapshot) => {
+        if (!snapshot.exists()) {
+          throw new Error("The app is not working currently!");
+        }
+        setAppState({
+          ...appState,
+          userData: user.uid
+            ? snapshot.val()[Object.keys(snapshot.val())[0]]
+            : null,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [user]);
 
   return (
     <>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
-          {user ? (
-            <Stack.Screen name="Inside" options={{ headerShown: false }}>
-              {(props) => <LoggedInRoute handle={handle} {...props} />}
-            </Stack.Screen>
-          ) : (
-            <Stack.Screen
-              name="Login"
-              component={Login}
-              options={{ headerShown: false }}
-            />
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
+      <AuthContext.Provider value={{ ...appState, setUser: setAppState }}>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Login">
+            {user ? (
+              <Stack.Screen name="Inside" options={{ headerShown: false }} component={LoggedInRoute}/>
+
+            ) : (
+              <Stack.Screen
+                name="Login"
+                component={Login}
+                options={{ headerShown: false }}
+              />
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AuthContext.Provider>
     </>
   );
 }

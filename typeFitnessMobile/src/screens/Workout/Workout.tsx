@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Text,
   StyleSheet,
@@ -7,9 +7,9 @@ import {
 } from "react-native";
 import readData from "../../utils/readData";
 import { NavigationProp, RouteProp } from "@react-navigation/native";
+import { AuthContext } from "../../contenxt/AuthContext";
 
 type propType = {
-  handle: string | null;
   navigation: NavigationProp<any, any>;
 };
 
@@ -32,30 +32,32 @@ export type WorkoutArrType = [string, WorkoutType];
 
 type AllWorkoutsType = WorkoutArrType[];
 
-const Workout = ({ handle, navigation }: propType) => {
+const Workout = ({ navigation }: propType) => {
   const [allWorkouts, setAllWorkouts] = useState<any>([]);
-
+  const context: any = useContext(AuthContext);
+  const currentUser = context.userData?.handle;
   useEffect(() => {
-    readData(`workouts/${handle}`, (snapshot: SnapshotType) => {
+    currentUser && 
+    readData(`workouts/${currentUser}`, (snapshot: SnapshotType) => {
       const result: AllWorkoutsType = Object.entries(snapshot);
       setAllWorkouts(result);
     });
-  }, [handle]);
+  }, [currentUser]);
 
   const pressHandler = (workout: WorkoutArrType) => {
-    navigation.navigate("RecordWorkout", { handle, workout });
+    navigation.navigate("RecordWorkout", { currentUser, workout });
   };
   return (
     <>
       {Array.isArray(allWorkouts) &&
         allWorkouts.map((workout: WorkoutArrType) => (
-            <TouchableWithoutFeedback
-              style={styles.touchable}
-              onPress={() => pressHandler(workout)}
-              key={workout[0]}
-            >
-              <Text style={styles.text}>{workout[1].name}</Text>
-            </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            style={styles.touchable}
+            onPress={() => pressHandler(workout)}
+            key={workout[0]}
+          >
+            <Text style={styles.text}>{workout[1].name}</Text>
+          </TouchableWithoutFeedback>
         ))}
     </>
   );

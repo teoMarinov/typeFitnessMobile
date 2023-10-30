@@ -7,12 +7,11 @@ import { RouteProp } from "@react-navigation/native";
 
 type propType = {
   navigation: DrawerNavigationProp<any, any>;
-  handle: string | null
 };
 
 const Stack = createNativeStackNavigator();
 
-export default function WorkoutStack({ navigation, handle }: propType) {
+export default function WorkoutStack({ navigation }: propType) {
   return (
     <Stack.Navigator initialRouteName="AllWorkouts">
       <Stack.Screen
@@ -23,12 +22,9 @@ export default function WorkoutStack({ navigation, handle }: propType) {
           ),
         }}
       >
-        {(props) => <Workout handle={handle} {...props} />}
+        {() => <Workout navigation={navigation} />}
       </Stack.Screen>
-      <Stack.Screen
-        name="RecordWorkout"
-        component={RecordWorkout}
-      />
+      <Stack.Screen name="RecordWorkout" component={RecordWorkout} />
     </Stack.Navigator>
   );
 }
