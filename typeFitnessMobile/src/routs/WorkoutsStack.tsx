@@ -24,7 +24,8 @@ export default function WorkoutStack({ navigation }: propType) {
       >
         {() => <Workout navigation={navigation} />}
       </Stack.Screen>
-      <Stack.Screen name="RecordWorkout" component={RecordWorkout} />
+      <Stack.Screen name="RecordWorkout" component={RecordWorkout}
+       />
     </Stack.Navigator>
   );
 }

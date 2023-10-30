@@ -34,8 +34,8 @@ const ExerciseLine = ({
   exerciseIndex,
 }: propType) => {
   const [exerciseLoggs, setExerciseLoggs] = useState([{ failure: false }]);
-  const lineH = exercise.name.length > 37 ? 64 : 30;
-  const lineIncrease = 45;
+  const lineH = exercise.name.length > 31 ? 104 : 74;
+  const lineIncrease = 55;
 
   const updateLoggedData = (newLog: logType[]) => {
     if (!loggedData[exercise.name]) {
@@ -97,6 +97,7 @@ const ExerciseLine = ({
   return (
     <View
       style={{
+        width: "100%",
         height:
           currentlyOpen === exerciseIndex
             ? exerciseLoggs.length * lineIncrease + lineH
@@ -105,12 +106,14 @@ const ExerciseLine = ({
       }}
     >
       <TouchableWithoutFeedback onPress={toggleCurrentlyOpen}>
-        <Text style={{ height: 30 }}>
-          {exercise.name} - {exercise.sets} x {exercise.reps}
-        </Text>
+        <View style={styles.textView}>
+          <Text style={styles.text}>
+            {exercise.name} - {exercise.sets} x {exercise.reps}
+          </Text>
+        </View>
       </TouchableWithoutFeedback>
       {exerciseLoggs.map((data: any, index: number) => (
-        <View key={index} style={styles.view}>
+        <View key={index} style={styles.inputContainer}>
           <TextInput
             keyboardType="numeric"
             style={styles.input}
@@ -129,7 +132,7 @@ const ExerciseLine = ({
           />
           <AntDesign
             name="exclamationcircle"
-            size={20}
+            size={24}
             color={data.failure ? "red" : "black"}
             onPress={() => handleToggleFailure(index)}
           />
@@ -142,7 +145,7 @@ const ExerciseLine = ({
 export default ExerciseLine;
 
 const styles = StyleSheet.create({
-  view: {
+  inputContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -151,9 +154,21 @@ const styles = StyleSheet.create({
     borderColor: "#333",
     borderWidth: 1,
     borderRadius: 4,
-    width: 40,
-    height: 35,
+    width: 70,
+    marginRight: 10,
     margin: 5,
+    height: 45,
+    textAlign: "center",
+  },
+  textView: {
+    backgroundColor: "#ddd",
+    padding: 15,
+    borderRadius: 6,
+    marginBottom: 6,
+    marginHorizontal: 5
+  },
+  text: {
+    fontSize: 25,
     textAlign: "center",
   },
 });

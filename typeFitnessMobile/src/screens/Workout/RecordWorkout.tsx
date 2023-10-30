@@ -71,10 +71,10 @@ const RecordWorkout = ({ route }: propType) => {
   };
 
   return (
-    <ScrollView style={{ flex: 1 }}>
-      <View style={styles.container}>
+    <View style={styles.container}>
+      <ScrollView>
         {exercises.map((exercise: ExerciseType, index: number) => (
-          <View key={exercise.name}>
+          <View key={exercise.name} >
             <ExerciseLine
               exercise={exercise}
               loggedData={loggedData}
@@ -85,11 +85,11 @@ const RecordWorkout = ({ route }: propType) => {
             />
           </View>
         ))}
-        <View>
+      </ScrollView>
+        <View style={styles.button}>
           <Button title="Finish" onPress={handleFinishWorkout} />
         </View>
-      </View>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -97,14 +97,19 @@ export default RecordWorkout;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
+    paddingTop: 20,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    position: "relative",
+    // backgroundColor: "coral",
     height: "100%",
   },
   button: {
     position: "absolute",
-    bottom: 30,
+    bottom: 10,
+    alignSelf: 'center',
+    width: "80%",
+    backgroundColor: 'red'
   },
 });
