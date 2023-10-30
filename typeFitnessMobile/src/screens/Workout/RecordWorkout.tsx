@@ -1,5 +1,5 @@
-import { View, Button, StyleSheet, ScrollView } from "react-native";
-import React, { useState, useEffect } from "react";
+import { View, Button, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import React, { useState } from "react";
 import { RouteProp } from "@react-navigation/native";
 import { WorkoutArrType, ExerciseType } from "./Workout";
 import addData from "../../utils/addData";
@@ -71,44 +71,47 @@ const RecordWorkout = ({ route }: propType) => {
   };
 
   return (
-    <View style={styles.container}>
-      <ScrollView>
-        {exercises.map((exercise: ExerciseType, index: number) => (
-          <View key={exercise.name} >
-            <ExerciseLine
-              exercise={exercise}
-              loggedData={loggedData}
-              setLoggedData={setLoggedData}
-              currentlyOpen={currentlyOpen}
-              setCurrentlyOpen={setCurrentlyOpen}
-              exerciseIndex={index}
-            />
-          </View>
-        ))}
-      </ScrollView>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <View style={styles.container}>
+        <ScrollView>
+          {exercises.map((exercise: ExerciseType, index: number) => (
+            <View key={exercise.name}>
+              <ExerciseLine
+                exercise={exercise}
+                loggedData={loggedData}
+                setLoggedData={setLoggedData}
+                currentlyOpen={currentlyOpen}
+                setCurrentlyOpen={setCurrentlyOpen}
+                exerciseIndex={index}
+              />
+            </View>
+          ))}
+        </ScrollView>
         <View style={styles.button}>
           <Button title="Finish" onPress={handleFinishWorkout} />
         </View>
-    </View>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
-
-export default RecordWorkout;
 
 const styles = StyleSheet.create({
   container: {
     paddingTop: 20,
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative",
-    height: "100%",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   button: {
-    position: "absolute",
+    position: 'relative',
     bottom: 10,
     alignSelf: 'center',
-    width: "80%",
-    backgroundColor: 'red'
+    width: '80%',
+    backgroundColor: 'red',
   },
 });
+
+export default RecordWorkout;
