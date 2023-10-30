@@ -14,15 +14,18 @@ const Login = () => {
   const [handle, setHadnle] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const appAuth = auth;
-
-  const [error, setError] = useState("");
 
   const setUser = useContext(AuthContext);
 
+  const errorMessage = (message: string) => {
+    alert(message);
+    setLoading(false);
+  };
+
   const onLogin = async () => {
-    if (!handle) return setError("Please enter a username!");
-    if (!password) return setError("Please enter a password");
+    setLoading(true);
+    if (!handle) return errorMessage("Please enter a username!");
+    if (!password) return errorMessage("Please enter a password");
 
     try {
       const credential: any = await loginUser(handle, password);
@@ -35,15 +38,16 @@ const Login = () => {
     } catch (error: any) {
       console.log(error.message);
       if (error.message.includes("wrong-password")) {
-        return setError("Wrong password!");
+        return errorMessage("Wrong password!");
       }
       if (error.message.includes("User not found")) {
-        return setError("User not found!");
+        return errorMessage("User not found!");
       }
       if (error.message.includes("too-many-requests")) {
-        return setError("Too many request. Try again later!");
+        return errorMessage("Too many request. Try again later!");
       }
     }
+    setLoading(false);
   };
   return (
     <View style={styles.container}>
