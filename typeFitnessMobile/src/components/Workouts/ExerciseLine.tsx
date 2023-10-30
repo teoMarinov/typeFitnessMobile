@@ -11,15 +11,11 @@ import { loggedDataType } from "../../screens/Workout/RecordWorkout";
 import { AntDesign } from "@expo/vector-icons";
 import Animated, {
   Easing,
-  withSpring,
   useSharedValue,
   useAnimatedStyle,
-  withRepeat,
-  withSequence,
-  withDelay,
   withTiming,
-  useDerivedValue,
 } from "react-native-reanimated";
+import { logsType } from "../../screens/Workout/RecordWorkout";
 
 type propType = {
   exercise: ExerciseType;
@@ -30,12 +26,6 @@ type propType = {
   exerciseIndex: number;
 };
 
-export type logType = {
-  weight: string;
-  reps: string;
-  failure: boolean;
-};
-
 const ExerciseLine = ({
   exercise,
   loggedData,
@@ -44,7 +34,9 @@ const ExerciseLine = ({
   setCurrentlyOpen,
   exerciseIndex,
 }: propType) => {
-  const [exerciseLoggs, setExerciseLoggs] = useState([{ failure: false }]);
+  const [exerciseLoggs, setExerciseLoggs] = useState<logsType[]>([
+    { failure: false },
+  ]);
   const lineH = exercise.name.length > 31 ? 104 : 74;
   const lineIncrease = 55;
 
@@ -65,7 +57,7 @@ const ExerciseLine = ({
     };
   });
 
-  const updateLoggedData = (newLog: logType[]) => {
+  const updateLoggedData = (newLog: logsType[]) => {
     if (!loggedData[exercise.name]) {
       const changedLog = {
         ...loggedData,
@@ -81,9 +73,9 @@ const ExerciseLine = ({
     setLoggedData(changedLog);
   };
 
-  const handleInput = (key: string, value: any, index: number) => {
+  const handleInput = (key: string, value: string, index: number) => {
     const lastIndex = exerciseLoggs.length - 1;
-    const updatedLoggs: any = [...exerciseLoggs];
+    const updatedLoggs: logsType[] = [...exerciseLoggs];
 
     updatedLoggs[index] = {
       ...updatedLoggs[index],
@@ -138,7 +130,7 @@ const ExerciseLine = ({
           </Text>
         </View>
       </TouchableWithoutFeedback>
-      {exerciseLoggs.map((data: any, index: number) => (
+      {exerciseLoggs.map((data: logsType, index: number) => (
         <View key={index} style={styles.inputContainer}>
           <TextInput
             keyboardType="numeric"

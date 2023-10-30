@@ -23,12 +23,13 @@ type SnapshotType = {
   [id: string]: WorkoutType;
 };
 
+
 export type WorkoutArrType = [string, WorkoutType];
 
 type AllWorkoutsType = WorkoutArrType[];
 
 const Workout = ({ navigation }: propType) => {
-  const [allWorkouts, setAllWorkouts] = useState<any>([]);
+  const [allWorkouts, setAllWorkouts] = useState<AllWorkoutsType>([]);
   const context: any = useContext(AuthContext);
   const currentUser = context.userData?.handle;
   useEffect(() => {

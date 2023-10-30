@@ -17,11 +17,8 @@ import { AuthContext } from "./src/contenxt/AuthContext";
 
 const Stack = createNativeStackNavigator();
 
-type propType = {
-  navigation: DrawerNavigationProp<any, any>;
-};
 
-export default function App({ navigation }: propType) {
+export default function App() {
   const [user]: any = useAuthState(auth);
 
   const [appState, setAppState] = useState<any>({

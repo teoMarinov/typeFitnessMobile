@@ -13,17 +13,16 @@ type propType = {
 type WorkoutDataType = {
   name: string;
   date: string;
-  exercises: any;
+  exercises: loggedDataType;
 };
 
-type logsType = {
+export type logsType = {
   failure: boolean;
-  reps: string;
-  weight: string;
+  reps?: string;
+  weight?: string;
 };
 
 type exerciseLogType = {
-  id: any;
   logs: logsType;
 };
 
@@ -46,10 +45,10 @@ const RecordWorkout = ({ route }: propType) => {
   const handleFinishWorkout = () => {
     if (Object.keys(loggedData).length < 1) return navigation.goBack();
     const data = Object.entries(loggedData);
-    const exercises = data.reduce((acc: any, currentExercise: any) => {
+    const exercises: loggedDataType = data.reduce((acc: loggedDataType, currentExercise: any) => {
       const exerciseName = currentExercise[0];
       const filteredLogs = currentExercise[1].logs.filter(
-        (i: any) => i.reps && i.weight
+        (i: logsType) => i.reps && i.weight
       );
       if (filteredLogs.length === 0) return acc;
       acc[exerciseName] = filteredLogs;
