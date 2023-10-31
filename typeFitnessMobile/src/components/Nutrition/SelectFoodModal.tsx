@@ -4,17 +4,14 @@ import {
   Button,
   Modal,
   StyleSheet,
-  TouchableOpacity,
   TextInput,
+  TouchableWithoutFeedback,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import readData from "../../utils/readData";
-
-type propType = {
-  open: boolean;
-  setOpen: (_: boolean) => void;
-  currentUser: string;
-};
+import FoodMealSelector from "./Selector/FoodMealSelector";
+import { AntDesign, FontAwesome } from "@expo/vector-icons";
+import MacrosIfno from "./MacrosInfo/MacrosIfno";
 
 export type foodDetails = {
   calories: number;
@@ -27,15 +24,38 @@ export type foodDetails = {
   date: string;
   weight: number;
 };
-
+export type mealDetails = {
+  calories: number;
+  fat: number;
+  saturatedFat: number;
+  carbohydrates: number;
+  sugar: number;
+  protein: number;
+  name: string;
+  date: string;
+  ingredients: dataType;
+};
 type dataType = [string, foodDetails][];
 
-const SelectFoodModal = ({ open, setOpen, currentUser }: propType) => {
-  const [selected, setSelected] = useState("foods");
+type propType = {
+  currentUser: string;
+  currentSelectedFoods: any;
+  setCurrentSelecetedFoods: (_: any) => void;
+  setMealName: (_: string) => void;
+};
+
+const SelectFoodModal = ({
+  currentUser,
+  currentSelectedFoods,
+  setCurrentSelecetedFoods,
+  setMealName,
+}: propType) => {
+  const [selected, setSelected] = useState("Foods");
   const [foodData, setFoodData] = useState<dataType>([]);
   const [mealData, setMealData] = useState<dataType>([]);
   const [searchInput, setSearchInput] = useState("");
   const [displayData, setDisplayData] = useState<dataType>([]);
+  const [open, setOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (!currentUser) return;
@@ -64,9 +84,9 @@ const SelectFoodModal = ({ open, setOpen, currentUser }: propType) => {
   }, [currentUser]);
 
   const searchWithInput = () => {
-    if (!searchInput) return setDisplayData([])
+    if (!searchInput) return setDisplayData([]);
     const fitleredData =
-      selected === "foods"
+      selected === "Foods"
         ? foodData.filter((food) => {
             const normalizedInput = searchInput.toLowerCase();
             return food[1].name.toLowerCase().includes(normalizedInput);
@@ -78,37 +98,93 @@ const SelectFoodModal = ({ open, setOpen, currentUser }: propType) => {
     setDisplayData(fitleredData);
   };
 
-  console.log(displayData)
+  const addFoodToSelected = (food: [string, foodDetails]) => {
+    if (currentSelectedFoods.some((item: any) => item[0] === food[0])) {
+      return alert(`${food[1].name} has already been added`);
+    }
+    const newFood: any = [...currentSelectedFoods, food];
+    setCurrentSelecetedFoods(newFood);
+  };
+
+  const addMealToSelected = (meal: [string, mealDetails]) => {
+    setCurrentSelecetedFoods(meal[1].ingredients);
+    setMealName(meal[1].name);
+  };
+
+  const handleAddToSelected = (item: [string, any]) => {
+    selected === "Foods" && addFoodToSelected(item);
+    selected === "Meals" && addMealToSelected(item);
+    setSearchInput("");
+    setDisplayData([]);
+    closeModal();
+  };
+
+  const closeModal = () => {
+    setOpen(false);
+    setSearchInput("");
+    setDisplayData([]);
+    setSelected("Foods");
+  };
+
   return (
-    <Modal visible={open} animationType="fade">
-      <View style={styles.modalContainer}>
-        <View style={styles.centered}>
-          <View style={styles.horizontalStackContainer}>
-            <TouchableOpacity onPress={() => setSelected("foods")}>
-              <Text style={{ paddingHorizontal: 20 }}>foods</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setSelected("meals")}>
-              <Text style={{ paddingHorizontal: 20 }}>meals</Text>
-            </TouchableOpacity>
+    <>
+      <Button title="open modal" onPress={() => setOpen(true)} />
+      <Modal visible={open} animationType="slide">
+        <View style={styles.modalContainer}>
+          <View style={styles.centered}>
+            <View style={styles.header}>
+              <Text style={{ fontSize: 28 }}> Select from {selected}</Text>
+              <View style={styles.closeIcon}>
+                <AntDesign
+                  name="closecircleo"
+                  size={38}
+                  color="black"
+                  onPress={closeModal}
+                />
+              </View>
+            </View>
+            <View style={styles.horizontalStackContainer}>
+              <FoodMealSelector setSelected={setSelected} />
+              <TextInput
+                style={styles.textInput}
+                value={searchInput}
+                onChange={(val) => {
+                  setSearchInput(val.nativeEvent.text);
+                }}
+              />
+              <View style={styles.searchIcon}>
+                <FontAwesome
+                  name="search"
+                  size={24}
+                  color="black"
+                  onPress={searchWithInput}
+                />
+              </View>
+            </View>
+            <View style={styles.itemContainer}>
+              {displayData.map((item: any) => (
+                <TouchableWithoutFeedback
+                  onPress={() => handleAddToSelected(item)}
+                  key={item[0]}
+                >
+                  <View style={styles.itemText}>
+                    <Text
+                      style={{
+                        marginLeft: 20,
+                        fontSize: 30,
+                      }}
+                    >
+                      {item[1].name}
+                    </Text>
+                    <MacrosIfno data={item[1]} />
+                  </View>
+                </TouchableWithoutFeedback>
+              ))}
+            </View>
           </View>
-          <View style={styles.horizontalStackContainer}>
-            <TextInput
-              style={styles.textInput}
-              onChange={(val) => {
-                setSearchInput(val.nativeEvent.text);
-              }}
-            />
-            <Button title={searchInput} onPress={searchWithInput}/>
-          </View>
-          {
-            displayData.map((item: any) => (
-              <Text key={item[0]}>{item[1].name}</Text>
-            ))
-          }
-          <Button title="close modal" onPress={() => setOpen(false)} />
         </View>
-      </View>
-    </Modal>
+      </Modal>
+    </>
   );
 };
 
@@ -128,20 +204,52 @@ const styles = StyleSheet.create({
   centered: {
     width: "100%",
     height: "100%",
-    backgroundColor: "coral",
-    justifyContent: "center",
   },
   horizontalStackContainer: {
     flexDirection: "row",
-    justifyContent: "center",
+    position: "absolute",
+    top: 60,
+    marginBottom: 120,
     alignItems: "center",
   },
   textInput: {
-    padding: 2,
-    margin: 2,
+    paddingLeft: 15,
+    marginVertical: 2,
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: "rgba(0,0,0,0.3)",
     borderRadius: 3,
-    width: 150,
+    width: "79.95%",
+    height: 50,
+    fontSize: 22,
+  },
+  itemContainer: {
+    top: 150,
+    width: "100%",
+  },
+  itemText: {
+    padding: 10,
+    flexDirection: "row",
+    margin: 5,
+    marginHorizontal: 15,
+    borderColor: "black",
+    backgroundColor: "#ddd",
+    borderRadius: 4,
+    justifyContent: "space-between",
+  },
+  searchIcon: {
+    position: "absolute",
+    right: 10,
+  },
+  closeIcon: {
+    position: "absolute",
+    right: 10,
+  },
+  header: {
+    marginTop: 10,
+    width: "100%",
+    height: 52,
+    backgroundColor: "#ddd",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
