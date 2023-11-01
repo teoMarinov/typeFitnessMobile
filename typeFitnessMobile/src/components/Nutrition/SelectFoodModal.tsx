@@ -128,7 +128,11 @@ const SelectFoodModal = ({
 
   return (
     <>
-      <Button title="open modal" onPress={() => setOpen(true)} />
+      <View style={styles.openModal}>
+        <TouchableWithoutFeedback onPress={() => setOpen(true)}>
+          <Button title="Add Food"  onPress={() => setOpen(true)}/>
+        </TouchableWithoutFeedback>
+      </View>
       <Modal visible={open} animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.centered}>
@@ -251,5 +255,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#ddd",
     justifyContent: "center",
     alignItems: "center",
+  },
+  openModal: {
+    position: "absolute",
+    top: 5,
   },
 });
