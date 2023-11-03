@@ -3,6 +3,8 @@ import React, { useState, useContext } from "react";
 import { AuthContext } from "../../contenxt/AuthContext";
 import SelectFoodModal from "../../components/Nutrition/SelectFoodModal";
 import addData from "../../utils/addData";
+import FoodBox from "../../components/Nutrition/FoodBox";
+import TotalMacros from "../../components/Nutrition/TotalMacros/TotalMacros";
 
 export type macroType = {
   calories: number;
@@ -23,7 +25,16 @@ export type foodDetails = {
   protein: number;
   saturatedFat: number;
   sugar: number;
-  weight: number;
+  weight: any | string;
+};
+
+export type TotalMacrtosType = {
+  totalCalories: String;
+  totalFat: String;
+  totalSaturatedFat: String;
+  totalCarbohydrates: String;
+  totalSugar: String;
+  totalProtein: String;
 };
 
 const Nutrition = () => {
@@ -75,7 +86,7 @@ const Nutrition = () => {
     }, 0)
     .toFixed(1);
 
-  const totalMacros = {
+  const totalMacros: TotalMacrtosType = {
     totalCalories,
     totalFat,
     totalSaturatedFat,
@@ -100,7 +111,7 @@ const Nutrition = () => {
     setCurrentSelecetedFoods(editedArr);
   };
 
-  const changeFoodWeight = (id: string, newVal: number) => {
+  const changeFoodWeight = (id: string, newVal: string) => {
     const editedWeight = [...currentSelectedFoods];
     editedWeight.map((food: string & foodDetails[]) => {
       if (food[0] === id) food[1].weight = newVal;
@@ -144,11 +155,14 @@ const Nutrition = () => {
       <Text>{mealName}</Text>
       {currentSelectedFoods.map((food: [string, foodDetails]) => (
         <View style={styles.horizontalStackContainer} key={food[0]}>
-          <Text>{food[1].name}</Text>
-          <Button title="X" onPress={() => removeFromSelected(food[0])} />
+          <FoodBox
+            data={food}
+            changeFoodWeight={changeFoodWeight}
+            removeFromSelected={removeFromSelected}
+          />
         </View>
       ))}
-
+      {currentSelectedFoods.length > 0 && <TotalMacros data={totalMacros} />}
     </View>
   );
 };
@@ -174,7 +188,7 @@ const styles = StyleSheet.create({
   },
   horizontalStackContainer: {
     flexDirection: "row",
-  justifyContent: "center",
+    justifyContent: "center",
     alignItems: "center",
   },
 });

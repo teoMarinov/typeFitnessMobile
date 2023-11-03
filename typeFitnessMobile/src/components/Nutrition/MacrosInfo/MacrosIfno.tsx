@@ -9,9 +9,10 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { AntDesign } from "@expo/vector-icons";
+import { foodDetails } from "../SelectFoodModal";
 
 type PropType = {
-  data: any;
+  data: foodDetails;
 };
 
 const MacrosIfno = ({ data }: PropType) => {
@@ -21,6 +22,14 @@ const MacrosIfno = ({ data }: PropType) => {
     e.stopPropagation();
     setOpen(true);
   };
+
+  const calories = ((data.calories * data.weight) / 100).toFixed(1);
+  const fat = ((data.fat * data.weight) / 100).toFixed(1);
+  const saturatedFat = ((data.saturatedFat * data.weight) / 100).toFixed(1);
+  const carbohydrate = ((data.carbohydrate * data.weight) / 100).toFixed(1);
+  const sugar = ((data.sugar * data.weight) / 100).toFixed(1);
+  const protein = ((data.protein * data.weight) / 100).toFixed(1);
+
   return (
     <>
       <View style={styles.openModal}>
@@ -36,7 +45,9 @@ const MacrosIfno = ({ data }: PropType) => {
         <View style={styles.overlay}>
           <View style={styles.modalContainer}>
             <View style={styles.header}>
-              <Text style={{ fontSize: 30, color: "white" }}>Macro details:</Text>
+              <Text style={{ fontSize: 30, color: "white" }}>
+                Macro details:
+              </Text>
               <View style={styles.closeIcon}>
                 <AntDesign
                   name="closecircleo"
@@ -47,16 +58,15 @@ const MacrosIfno = ({ data }: PropType) => {
               </View>
             </View>
             <View style={styles.main}>
-              <Text style={styles.text}>Calories: {data.calories}</Text>
-              <Text style={styles.text}>Fat: {data.fat}</Text>
               <Text style={styles.text}>
-                Saturated Fat: {data.saturatedFat}
+                {data.name} per {data.weight}g
               </Text>
-              <Text style={styles.text}>
-                Carbohydrates: {data.carbohydrate}
-              </Text>
-              <Text style={styles.text}>Sugar: {data.sugar}</Text>
-              <Text style={styles.text}>Protein: {data.protein}</Text>
+              <Text style={styles.text}>Calories: {calories}</Text>
+              <Text style={styles.text}>Fat: {fat}</Text>
+              <Text style={styles.text}>Saturated Fat: {saturatedFat}</Text>
+              <Text style={styles.text}>Carbohydrates: {carbohydrate}</Text>
+              <Text style={styles.text}>Sugar: {sugar}</Text>
+              <Text style={styles.text}>Protein: {protein}</Text>
             </View>
           </View>
         </View>
@@ -106,6 +116,6 @@ const styles = StyleSheet.create({
   text: {
     color: "white",
     fontSize: 24,
-    padding: 10
+    padding: 10,
   },
 });

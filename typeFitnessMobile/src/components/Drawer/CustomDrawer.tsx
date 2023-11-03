@@ -27,12 +27,12 @@ const screenHeight = Dimensions.get("window").height;
 const styles = StyleSheet.create({
   content: {
     flex: 1,
-    backgroundColor: "rgba(255,90,90,0.1)",
-    height: screenHeight,
+    // backgroundColor: "rgba(255,90,90,0.1)",
+    height: screenHeight - 30,
   },
   button: {
     position: "absolute",
-    bottom: 35,
+    bottom: 15,
     alignSelf: "center",
     width: "80%",
   },
