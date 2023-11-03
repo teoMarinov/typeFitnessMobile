@@ -1,4 +1,4 @@
-import { View, Text, Button, Modal, StyleSheet } from "react-native";
+import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../../contenxt/AuthContext";
 import SelectFoodModal from "../../components/Nutrition/SelectFoodModal";
@@ -6,6 +6,7 @@ import addData from "../../utils/addData";
 import FoodBox from "../../components/Nutrition/FoodBox";
 import TotalMacros from "../../components/Nutrition/TotalMacros/TotalMacros";
 import EnterName from "../../components/Nutrition/EnterName";
+import { Keyboard } from "react-native";
 
 export type macroType = {
   calories: number;
@@ -44,6 +45,7 @@ const Nutrition = () => {
 
   const [currentSelectedFoods, setCurrentSelecetedFoods] = useState([]);
   const [mealName, setMealName] = useState("");
+
 
   const totalCalories = currentSelectedFoods
     .reduce((acc: number, food: string & macroType[]) => {
@@ -146,27 +148,29 @@ const Nutrition = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <SelectFoodModal
-        currentUser={currentUser}
-        currentSelectedFoods={currentSelectedFoods}
-        setCurrentSelecetedFoods={setCurrentSelecetedFoods}
-        setMealName={setMealName}
-      />
-      {currentSelectedFoods.length > 0 && (
-        <EnterName mealName={mealName} setMealName={setMealName} />
-      )}
-      {currentSelectedFoods.length > 0 && <TotalMacros data={totalMacros} />}
-      {currentSelectedFoods.map((food: [string, foodDetails]) => (
-        <View style={styles.horizontalStackContainer} key={food[0]}>
-          <FoodBox
-            data={food}
-            changeFoodWeight={changeFoodWeight}
-            removeFromSelected={removeFromSelected}
-          />
-        </View>
-      ))}
-    </View>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View style={styles.container}>
+        <SelectFoodModal
+          currentUser={currentUser}
+          currentSelectedFoods={currentSelectedFoods}
+          setCurrentSelecetedFoods={setCurrentSelecetedFoods}
+          setMealName={setMealName}
+        />
+        {currentSelectedFoods.length > 0 && (
+          <EnterName mealName={mealName} setMealName={setMealName} />
+        )}
+        {currentSelectedFoods.length > 0 && <TotalMacros data={totalMacros} />}
+        {currentSelectedFoods.map((food: [string, foodDetails]) => (
+          <View style={styles.horizontalStackContainer} key={food[0]}>
+            <FoodBox
+              data={food}
+              changeFoodWeight={changeFoodWeight}
+              removeFromSelected={removeFromSelected}
+            />
+          </View>
+        ))}
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 

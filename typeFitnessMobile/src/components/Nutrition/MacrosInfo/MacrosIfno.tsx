@@ -12,7 +12,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { foodDetails } from "../SelectFoodModal";
 
 type PropType = {
-  data: foodDetails;
+  data: foodDetails
 };
 
 const MacrosIfno = ({ data }: PropType) => {
@@ -59,14 +59,14 @@ const MacrosIfno = ({ data }: PropType) => {
             </View>
             <View style={styles.main}>
               <Text style={styles.text}>
-                {data.name} per {data.weight}g
+                {data.name} per {data.weight} g:
               </Text>
-              <Text style={styles.text}>Calories: {calories}</Text>
-              <Text style={styles.text}>Fat: {fat}</Text>
-              <Text style={styles.text}>Saturated Fat: {saturatedFat}</Text>
-              <Text style={styles.text}>Carbohydrates: {carbohydrate}</Text>
-              <Text style={styles.text}>Sugar: {sugar}</Text>
-              <Text style={styles.text}>Protein: {protein}</Text>
+              <Text style={styles.text}>Calories: {calories} kcal</Text>
+              <Text style={styles.text}>Fat: {fat} g</Text>
+              <Text style={styles.text}>Saturated Fat: {saturatedFat} g</Text>
+              <Text style={styles.text}>Carbohydrates: {carbohydrate} g</Text>
+              <Text style={styles.text}>Sugar: {sugar} g</Text>
+              <Text style={styles.text}>Protein: {protein} g</Text>
             </View>
           </View>
         </View>
@@ -117,5 +117,6 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 24,
     padding: 10,
+    textAlign: "center",
   },
 });

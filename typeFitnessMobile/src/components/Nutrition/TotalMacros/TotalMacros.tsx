@@ -11,7 +11,7 @@ const TotalMacros = ({ data }: PropType) => {
   return (
     <View style={styles.gridContainer}>
       <View>
-        <InfoLine name="Cal" value={data.totalCalories} type="ckal" />
+        <InfoLine name="Cal" value={data.totalCalories} type="kcal" />
         <InfoLine name="Fat" value={data.totalFat} type="g" />
         <InfoLine
           name="Saturated Fat"

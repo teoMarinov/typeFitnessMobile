@@ -79,12 +79,20 @@ const SelectFoodModal = ({
           return dateA.getTime() - dateB.getTime();
         });
         setMealData(result);
+        setDisplayData(result);
       }
     );
   }, [currentUser]);
 
+  useEffect(() => {
+    searchWithInput();
+  }, [selected]);
+
+  useEffect(() => {
+    setDisplayData(foodData);
+  }, [open]);
+
   const searchWithInput = () => {
-    if (!searchInput) return setDisplayData([]);
     const fitleredData =
       selected === "Foods"
         ? foodData.filter((food) => {
@@ -130,7 +138,7 @@ const SelectFoodModal = ({
     <>
       <View style={styles.openModal}>
         <TouchableWithoutFeedback onPress={() => setOpen(true)}>
-          <Button title="Add Food"  onPress={() => setOpen(true)}/>
+          <Button title="Add Food" onPress={() => setOpen(true)} />
         </TouchableWithoutFeedback>
       </View>
       <Modal visible={open} animationType="slide">
@@ -166,7 +174,7 @@ const SelectFoodModal = ({
               </View>
             </View>
             <View style={styles.itemContainer}>
-              {displayData.map((item: any) => (
+              {displayData.map((item: [string, foodDetails]) => (
                 <TouchableWithoutFeedback
                   onPress={() => handleAddToSelected(item)}
                   key={item[0]}

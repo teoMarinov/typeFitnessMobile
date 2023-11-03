@@ -21,15 +21,17 @@ const FoodBox = ({ data, changeFoodWeight, removeFromSelected }: PropType) => {
           onPress={() => removeFromSelected(data[0])}
         />
         <Text style={styles.text}>{data[1].name} : </Text>
-        <TextInput
-          keyboardType="numeric"
-          value={String(data[1].weight)}
-          onChange={(val) => {
-            changeFoodWeight(data[0], val.nativeEvent.text);
-          }}
-          style={{ fontSize: 24, marginTop: 4 }}
-        />
-        <Text style={{ fontSize: 24, marginTop: 4 }}>g</Text>
+        <View style={styles.input}>
+          <TextInput
+            keyboardType="numeric"
+            value={String(data[1].weight)}
+            onChange={(val) => {
+              changeFoodWeight(data[0], val.nativeEvent.text);
+            }}
+            style={{ fontSize: 24, marginTop: 4 }}
+          />
+          <Text style={{ fontSize: 24, marginLeft: 1 }}>g</Text>
+        </View>
       </View>
       <MacrosIfno data={data[1]} />
     </View>
@@ -51,6 +53,14 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 30,
-    marginLeft: 15
+    marginLeft: 15,
+  },
+  input: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: "#aaa",
+    paddingHorizontal: 4,
   },
 });
