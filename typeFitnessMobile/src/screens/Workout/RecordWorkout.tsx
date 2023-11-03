@@ -31,9 +31,9 @@ export type loggedDataType = {
 };
 
 const RecordWorkout = ({ route }: propType) => {
-  const { workout, handle } = route.params as {
+  const { workout, currentUser } = route.params as {
     workout: WorkoutArrType;
-    handle: string;
+    currentUser: string;
   };
   const exercises = workout[1].exercises;
 
@@ -52,7 +52,7 @@ const RecordWorkout = ({ route }: propType) => {
       );
       if (filteredLogs.length === 0) return acc;
       acc[exerciseName] = filteredLogs;
-      addData(`exerciseLogs/${handle}/${exerciseName}`, {
+      addData(`exerciseLogs/${currentUser}/${exerciseName}`, {
         date: new Date().toString(),
         exercises: filteredLogs,
       });
@@ -65,7 +65,7 @@ const RecordWorkout = ({ route }: propType) => {
       exercises,
     };
 
-    addData(`finishedWorkouts/${handle}`, workoutData);
+    addData(`finishedWorkouts/${currentUser}`, workoutData);
     navigation.goBack();
   };
 

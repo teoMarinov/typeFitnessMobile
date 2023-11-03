@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
-import React from "react";
+import React, {useContext} from "react";
 import { TextInput } from "react-native-gesture-handler";
+import { AuthContext } from "../../contenxt/AuthContext";
 
 type PropType = {
   mealName: string;
