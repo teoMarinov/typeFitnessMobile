@@ -11,10 +11,10 @@ const InfoLine = ({ name, value, type }: PropType) => {
   return (
     <View style={styles.row}>
       <View style={styles.name}>
-        <Text>{name}:</Text>
+        <Text style={{ fontSize: 20, textAlign: "center" }}>{name}:</Text>
       </View>
       <View style={styles.value}>
-        <Text>
+        <Text style={{ fontSize: 20, textAlign: "center" }}>
           {value} {type}
         </Text>
       </View>
@@ -30,13 +30,16 @@ const styles = StyleSheet.create({
     margin: 5,
     paddingVertical: 2,
     backgroundColor: "#ddd",
+    height: 56,
   },
   name: {
     width: 95,
+    justifyContent: "center",
     alignItems: "center",
   },
   value: {
     width: 100,
     alignItems: "center",
+    justifyContent: "center",
   },
 });

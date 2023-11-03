@@ -5,6 +5,7 @@ import SelectFoodModal from "../../components/Nutrition/SelectFoodModal";
 import addData from "../../utils/addData";
 import FoodBox from "../../components/Nutrition/FoodBox";
 import TotalMacros from "../../components/Nutrition/TotalMacros/TotalMacros";
+import EnterName from "../../components/Nutrition/EnterName";
 
 export type macroType = {
   calories: number;
@@ -152,7 +153,10 @@ const Nutrition = () => {
         setCurrentSelecetedFoods={setCurrentSelecetedFoods}
         setMealName={setMealName}
       />
-      <Text>{mealName}</Text>
+      {currentSelectedFoods.length > 0 && (
+        <EnterName mealName={mealName} setMealName={setMealName} />
+      )}
+      {currentSelectedFoods.length > 0 && <TotalMacros data={totalMacros} />}
       {currentSelectedFoods.map((food: [string, foodDetails]) => (
         <View style={styles.horizontalStackContainer} key={food[0]}>
           <FoodBox
@@ -162,7 +166,6 @@ const Nutrition = () => {
           />
         </View>
       ))}
-      {currentSelectedFoods.length > 0 && <TotalMacros data={totalMacros} />}
     </View>
   );
 };
@@ -172,7 +175,6 @@ export default Nutrition;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
   },
   modalContainer: {

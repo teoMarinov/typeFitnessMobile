@@ -33,6 +33,6 @@ export default TotalMacros;
 const styles = StyleSheet.create({
   gridContainer: {
     flexDirection: "row",
-    backgroundColor: "#999",
+    backgroundColor: "#ccc",
   },
 });
