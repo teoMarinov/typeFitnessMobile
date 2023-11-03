@@ -1,4 +1,11 @@
-import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../../contenxt/AuthContext";
 import SelectFoodModal from "../../components/Nutrition/SelectFoodModal";
@@ -45,7 +52,6 @@ const Nutrition = () => {
 
   const [currentSelectedFoods, setCurrentSelecetedFoods] = useState([]);
   const [mealName, setMealName] = useState("");
-
 
   const totalCalories = currentSelectedFoods
     .reduce((acc: number, food: string & macroType[]) => {
@@ -149,27 +155,41 @@ const Nutrition = () => {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.container}>
-        <SelectFoodModal
-          currentUser={currentUser}
-          currentSelectedFoods={currentSelectedFoods}
-          setCurrentSelecetedFoods={setCurrentSelecetedFoods}
-          setMealName={setMealName}
-        />
-        {currentSelectedFoods.length > 0 && (
-          <EnterName mealName={mealName} setMealName={setMealName} />
-        )}
-        {currentSelectedFoods.length > 0 && <TotalMacros data={totalMacros} />}
-        {currentSelectedFoods.map((food: [string, foodDetails]) => (
-          <View style={styles.horizontalStackContainer} key={food[0]}>
-            <FoodBox
-              data={food}
-              changeFoodWeight={changeFoodWeight}
-              removeFromSelected={removeFromSelected}
-            />
-          </View>
-        ))}
-      </View>
+      <>
+        <View style={styles.container}>
+          <SelectFoodModal
+            currentUser={currentUser}
+            currentSelectedFoods={currentSelectedFoods}
+            setCurrentSelecetedFoods={setCurrentSelecetedFoods}
+            setMealName={setMealName}
+          />
+          {currentSelectedFoods.length > 0 && (
+            <>
+              <EnterName mealName={mealName} setMealName={setMealName} />
+              <TotalMacros data={totalMacros} />
+
+              <View style={styles.selectedFoodsContaier}>
+                <ScrollView>
+                  {currentSelectedFoods.map((food: [string, foodDetails]) => (
+                    <View style={styles.horizontalStackContainer} key={food[0]}>
+                      <FoodBox
+                        data={food}
+                        changeFoodWeight={changeFoodWeight}
+                        removeFromSelected={removeFromSelected}
+                      />
+                    </View>
+                  ))}
+                </ScrollView>
+              </View>
+              <TouchableOpacity onPress={handleSave} style={styles.save}>
+                <View>
+                  <Text>Save</Text>
+                </View>
+              </TouchableOpacity>
+            </>
+          )}
+        </View>
+      </>
     </TouchableWithoutFeedback>
   );
 };
@@ -196,5 +216,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+  },
+  selectedFoodsContaier: {
+    width: "100%",
+    height: 381,
+  },
+  save: {
+    width: "98%",
+    backgroundColor: "#eee",
+    alignItems: "center",
+    height: 50,
+    justifyContent: "center",
+    marginTop: 2,
+    borderRadius: 4,
+    borderWidth: 2,
+    borderColor: "#ccc",
   },
 });

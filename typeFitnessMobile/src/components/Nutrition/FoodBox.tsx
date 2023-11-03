@@ -28,7 +28,7 @@ const FoodBox = ({ data, changeFoodWeight, removeFromSelected }: PropType) => {
             onChange={(val) => {
               changeFoodWeight(data[0], val.nativeEvent.text);
             }}
-            style={{ fontSize: 24, marginTop: 4 }}
+            style={{ fontSize: 24, marginTop: 4, textAlign: "center" }}
           />
           <Text style={{ fontSize: 24, marginLeft: 1 }}>g</Text>
         </View>
@@ -54,6 +54,8 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 30,
     marginLeft: 15,
+    width: 200,
+    textAlign: "center",
   },
   input: {
     flexDirection: "row",
@@ -62,5 +64,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#aaa",
     paddingHorizontal: 4,
+    minWidth: 65,
+    textAlign: "center",
   },
 });

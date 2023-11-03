@@ -25,10 +25,10 @@ export default EnterName;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 60,
+    marginTop: 4,
     padding: 10,
     paddingBottom: 6,
-    backgroundColor: "#ccc",
+    // backgroundColor: "#ccc",
     width: "100%",
     flexDirection: "row",
     alignItems: "center",

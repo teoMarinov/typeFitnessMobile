@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import readData from "../../utils/readData";
@@ -136,11 +137,9 @@ const SelectFoodModal = ({
 
   return (
     <>
-      <View style={styles.openModal}>
-        <TouchableWithoutFeedback onPress={() => setOpen(true)}>
-          <Button title="Add Food" onPress={() => setOpen(true)} />
-        </TouchableWithoutFeedback>
-      </View>
+      <TouchableOpacity style={styles.openModal} onPress={() => setOpen(true)}>
+        <Text style={{fontSize: 24}}>Add Foods</Text>
+      </TouchableOpacity>
       <Modal visible={open} animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.centered}>
@@ -265,7 +264,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   openModal: {
-    position: "absolute",
-    top: 5,
+    width: "98%",
+    backgroundColor: "#eee",
+    alignItems: "center",
+    height: 50,
+    justifyContent: "center",
+    marginTop: 4,
+    borderRadius: 4,
+    borderWidth: 2,
+    borderColor: "#ccc"
   },
 });
