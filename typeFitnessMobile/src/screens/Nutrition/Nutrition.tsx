@@ -117,10 +117,10 @@ const Nutrition = () => {
       }
     );
 
-    setCurrentSelecetedFoods(editedArr);
+    setCurrentSelecetedFoods(editedArr); 
   };
 
-  const changeFoodWeight = (id: string, newVal: string) => {
+  const changeFoodWeight = (id: string, newVal: number) => {
     const editedWeight = [...currentSelectedFoods];
     editedWeight.map((food: string & foodDetails[]) => {
       if (food[0] === id) food[1].weight = newVal;

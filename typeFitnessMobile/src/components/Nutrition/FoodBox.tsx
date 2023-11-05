@@ -6,7 +6,7 @@ import MacrosIfno from "./MacrosInfo/MacrosIfno";
 
 type PropType = {
   data: [string, foodDetails];
-  changeFoodWeight: (id: string, newVal: string) => void;
+  changeFoodWeight: (id: string, newVal: number) => void;
   removeFromSelected: (id: string) => void;
 };
 
@@ -26,7 +26,7 @@ const FoodBox = ({ data, changeFoodWeight, removeFromSelected }: PropType) => {
             keyboardType="numeric"
             value={String(data[1].weight)}
             onChange={(val) => {
-              changeFoodWeight(data[0], val.nativeEvent.text);
+              changeFoodWeight(data[0], Number(val.nativeEvent.text));
             }}
             style={{ fontSize: 24, marginTop: 4, textAlign: "center" }}
           />
