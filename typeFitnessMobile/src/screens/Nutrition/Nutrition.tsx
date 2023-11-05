@@ -183,7 +183,7 @@ const Nutrition = () => {
               </View>
               <TouchableOpacity onPress={handleSave} style={styles.save}>
                 <View>
-                  <Text>Save</Text>
+                  <Text style={{fontSize: 24}}>Save</Text>
                 </View>
               </TouchableOpacity>
             </>

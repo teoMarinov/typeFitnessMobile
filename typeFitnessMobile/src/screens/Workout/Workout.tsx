@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Text, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
 import readData from "../../utils/readData";
-import { NavigationProp, RouteProp } from "@react-navigation/native";
+import { NavigationProp } from "@react-navigation/native";
 import { AuthContext } from "../../contenxt/AuthContext";
 
 type propType = {

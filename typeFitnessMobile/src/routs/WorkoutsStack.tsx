@@ -3,7 +3,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Workout from "../screens/Workout/Workout";
 import RecordWorkout from "../screens/Workout/RecordWorkout";
 import Header from "../components/Header/Header";
-import { RouteProp } from "@react-navigation/native";
 
 type propType = {
   navigation: DrawerNavigationProp<any, any>;
@@ -24,8 +23,13 @@ export default function WorkoutStack({ navigation }: propType) {
       >
         {() => <Workout navigation={navigation} />}
       </Stack.Screen>
-      <Stack.Screen name="RecordWorkout" component={RecordWorkout}
-       />
+      <Stack.Screen
+        name="RecordWorkout"
+        component={RecordWorkout}
+        options={({ route }: any) => ({
+          headerTitle: route.params.workout[1].name,
+        })}
+      />
     </Stack.Navigator>
   );
 }
